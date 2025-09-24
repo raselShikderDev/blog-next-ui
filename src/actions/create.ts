@@ -1,14 +1,29 @@
 "use server";
 
+import { revalidatePath, revalidateTag } from "next/cache";
 import { redirect } from "next/navigation";
+
+
+interface ICreatePost {
+  title: string;
+  content: string;
+  isFeatured: boolean;
+  tags: string[];
+  thumbnail?:string;
+  authorId: number;
+}
+
+
 
 export const createBlog = async (data: FormData) => {
       console.log("data: ", data);
 
   const newData = Object.fromEntries(data.entries());
-  const modifiedData = {
-    newData,
-    author: 2,
+  const modifiedData:ICreatePost = {
+    title: newData.title as string,
+    content: newData.content as string,
+    thumbnail: newData.thumbnail as string,
+    authorId: 2,
     tags: newData.tags
       .toString()
       .split(",")
@@ -25,9 +40,11 @@ export const createBlog = async (data: FormData) => {
     body: JSON.stringify(modifiedData),
   });
   const result = await res.json();
-  console.log("result: ", result);
+  console.log("result in frontend: ", result);
   
   if (result?.id) {
+        revalidateTag("BLOGS")
+        revalidatePath("/")
     redirect("/blogs");
   }
   return result;
