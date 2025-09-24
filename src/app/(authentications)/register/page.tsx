@@ -1,6 +1,11 @@
+import RegisterForm from "@/components/modules/authenticatons/registerCard";
+
 const RegisterPage = () => {
-  return <>
-  </>;
+  return (
+    <>
+      <RegisterForm />
+    </>
+  );
 };
 
 export default RegisterPage;
