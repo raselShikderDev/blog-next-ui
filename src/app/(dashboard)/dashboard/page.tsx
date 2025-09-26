@@ -1,10 +1,10 @@
-import { authOptions } from "@/helpers/auth";
+import { authOptions } from "@/helpers/authOptions";
 import { getServerSession } from "next-auth";
 
 const DashboardHomePage = async () => {
   const session = await getServerSession(authOptions);
 
-  // console.log(session);
+  console.log(session);
 
   return (
     <div className="flex justify-center text-center items-center w-full">

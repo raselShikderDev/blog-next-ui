@@ -16,7 +16,7 @@ import {
 import Image from "next/image";
 import PasswordInputToggler from "@/components/passwordToggoler";
 import { signIn } from "next-auth/react";
-import { login } from "@/actions/auth";
+// import { login } from "@/actions/auth";
 import { toast } from "sonner";
 
 // type LoginFormValues = {
@@ -33,19 +33,28 @@ export default function LoginCard() {
   });
 
   const onSubmit = async (values: FieldValues) => {
-     try {
-       const res = await login(values);
-       console.log(res);
- console.log(res);
- 
-       if (res?.id) {
-         toast.success("Login completed");
-       }
-     } catch (error) {
-       console.log(error);
-       toast.error("Login failed");
-     }
-   };
+    try {
+      // // Login with credential - (manual)
+      // const res = await login(values);
+      // console.log(res);
+      // console.log(res);
+
+      // if (res?.id) {
+      //   toast.success("Login completed");
+      // } else{
+      //   toast.error("Login failed");
+      // }
+
+      // Credential login with nextAuth
+      signIn("credentials",{
+        ...values,
+        callbackUrl:"/dashboard"
+      })
+    } catch (error) {
+      console.log(error);
+      toast.error("Login failed");
+    }
+  };
   const handleSocialLogin = (provider: "google" | "github") => {
     console.log(`Login with ${provider}`);
   };
