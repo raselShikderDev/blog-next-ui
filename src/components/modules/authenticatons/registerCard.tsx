@@ -13,7 +13,9 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-// import { useRouter } from "next/navigation";
+import { register } from "@/actions/auth";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 // type RegisterFormValues = {
 //   name: string;
@@ -31,10 +33,20 @@ export default function RegisterForm() {
       password: "",
     },
   });
-//   const router = useRouter();
+    const router = useRouter();
   const onSubmit = async (values: FieldValues) => {
-   console.log(values);
-   
+    try {
+      const res = await register(values);
+      console.log(res);
+
+      if (res?.id) {
+        toast.success("Registerd completed");
+        router.push("/")
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Registerd failed");
+    }
   };
 
   return (
@@ -110,7 +122,7 @@ export default function RegisterForm() {
             )}
           />
 
-          <Button type="submit" className="w-full mt-2">
+          <Button type="submit" className="w-full mt-2 cursor-pointer">
             Register
           </Button>
 

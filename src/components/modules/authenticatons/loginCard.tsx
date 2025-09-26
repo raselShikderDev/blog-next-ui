@@ -16,6 +16,8 @@ import {
 import Image from "next/image";
 import PasswordInputToggler from "@/components/passwordToggoler";
 import { signIn } from "next-auth/react";
+import { login } from "@/actions/auth";
+import { toast } from "sonner";
 
 // type LoginFormValues = {
 //   email: string;
@@ -31,9 +33,19 @@ export default function LoginCard() {
   });
 
   const onSubmit = async (values: FieldValues) => {
-    console.log(values);
-  };
-
+     try {
+       const res = await login(values);
+       console.log(res);
+ console.log(res);
+ 
+       if (res?.id) {
+         toast.success("Login completed");
+       }
+     } catch (error) {
+       console.log(error);
+       toast.error("Login failed");
+     }
+   };
   const handleSocialLogin = (provider: "google" | "github") => {
     console.log(`Login with ${provider}`);
   };
@@ -82,7 +94,7 @@ export default function LoginCard() {
               )}
             />
 
-            <Button type="submit" className="w-full mt-2">
+            <Button type="submit" className="w-full mt-2 cursor-pointer">
               Login
             </Button>
 
@@ -97,14 +109,14 @@ export default function LoginCard() {
         <div className="flex flex-col gap-3 mt-4">
           <Button
             variant="outline"
-            className="flex items-center justify-center gap-2"
+            className="flex items-center justify-center gap-2 cursor-pointer"
             onClick={() => handleSocialLogin("github")}
           >
             {/* GitHub */}
             <Image
               src="https://img.icons8.com/ios-glyphs/24/github.png"
               alt="GitHub"
-              className="w-5 h-5"
+              className="w-5 h-5 "
               width={20}
               height={20}
             />
@@ -113,7 +125,7 @@ export default function LoginCard() {
 
           <Button
             variant="outline"
-            className="flex items-center justify-center gap-2"
+            className="flex items-center justify-center gap-2 cursor-pointer"
             onClick={() =>
               signIn("google", {
                 callbackUrl: "/dashboard",
