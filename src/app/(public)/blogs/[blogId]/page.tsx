@@ -1,6 +1,7 @@
 import BlogDetailsCard from "@/components/modules/Blogs/BlogDetailsCard";
 import { IPost } from "@/types";
 
+
 export async function generateStaticParams() {
   const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/post/}`);
   const blogs: IPost[] = await res.json();
@@ -8,6 +9,7 @@ export async function generateStaticParams() {
     blogId: String(blog.id),
   }));
 }
+
 
 const BlogDetailsPage = async ({
   params,
